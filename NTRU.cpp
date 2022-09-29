@@ -5,11 +5,11 @@ typedef long long type;
 
 // Public constants
 // q > 3Np
-// p > 256, the ASCII table
+// p > 256, the extended ASCII table
 // N, q, p, prime
 const type N = 23, p = 257, q = 17737, INF = N * 100;
 
-// Constante necess·ria a se discutir
+// Constante necess√°ria a se discutir
 const int d = N / 2;
 
 string original_message = "#1 - Integrantes: Davi + Pietro + Barbosa\n#2 - Professor responsavel: Xexeo";
@@ -190,7 +190,7 @@ type inv(type x, type mod){
 polynomial poly_floor(polynomial a, polynomial b, type mod){
 	polynomial r;
 	if(b.degree() == -INF){
-		cout << "Divis„o por zero\n";
+		cout << "Divis√£o por zero\n";
 		return r;
 	}
 	if(b.degree() > a.degree())
