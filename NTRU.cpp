@@ -5,7 +5,7 @@ typedef long long type;
 
 // Public constants
 // q > 3Np
-// p > 256, the extended ASCII table
+// p > 256, the ASCII table
 // N, q, p, prime
 const type N = 23, p = 257, q = 17737, INF = N * 100;
 
@@ -153,10 +153,11 @@ polynomial sub(polynomial a, polynomial b, type mod){
 
 polynomial multiply(polynomial a, polynomial b, type mod){
 	polynomial r;
-	r.resize(N);
+	if(a.degree() + b.degree() >= 0)
+		r.resize(a.degree() + b.degree() + 1);
 	for(size_t i = 0; i < a.size(); i++)
 		for(size_t j = 0; j < b.size(); j++)
-			r[(i + j) % N] = (r[(i + j) % N] + a[i] * b[j]) % mod;
+			r[i + j] = (r[i + j] + a[i] * b[j]) % mod;
 	while(!r.empty() && r.back() == 0)
 		r.pop_back();
 	return r;
@@ -190,7 +191,7 @@ type inv(type x, type mod){
 polynomial poly_floor(polynomial a, polynomial b, type mod){
 	polynomial r;
 	if(b.degree() == -INF){
-		cout << "Divisão por zero\n";
+		cout << "Divisï¿½o por zero\n";
 		return r;
 	}
 	if(b.degree() > a.degree())
@@ -250,10 +251,10 @@ key generate_keys(){
 	key r;
 	polynomial aux;
 	r.f = random_key(d + 1, d);
-	while(gcd(base, r.f, aux, r.fp, p) != polynomial({1}) || gcd(base, r.f, aux, r.fq, q) != polynomial({1}))
+	while(gcd(r.f, base, r.fp, aux, p) != polynomial({1}) || gcd(r.f, base, r.fq, aux, q) != polynomial({1}))
 		r.f = random_key(d + 1, d);
 	r.g = random_key(d, d);
-	r.h = multiply(r.fq, r.g, q);
+	r.h = remainder(multiply(r.fq, r.g, q), base, q);
 	return r;
 }
 
@@ -276,16 +277,16 @@ polynomial encrypt(string message, polynomial h){
 		i = i * p % q;
 	while(!r.empty() && r.back() == 0)
 		r.pop_back();
-	return add(m, multiply(r, h, q), q);
+	return remainder(add(m, multiply(r, h, q), q), base, q);
 }
 
 polynomial decrypt(polynomial e, key k){
-	polynomial a = multiply(k.f, e, q);
+	polynomial a = remainder(multiply(k.f, e, q), base, q);
 	for(type &i : a.coef){
 		if(i < -q / 2) i += q;
 		if(i > q / 2) i -= q;
 	}
-	return multiply(k.fp, a, p);
+	return remainder(multiply(k.fp, a, p), base, p);
 }
 
 string poly_to_msg(polynomial d){
