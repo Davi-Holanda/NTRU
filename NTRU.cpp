@@ -191,7 +191,7 @@ type inv(type x, type mod){
 polynomial poly_floor(polynomial a, polynomial b, type mod){
 	polynomial r;
 	if(b.degree() == -INF){
-		cout << "Divisï¿½o por zero\n";
+		cout << "Divisão por zero\n";
 		return r;
 	}
 	if(b.degree() > a.degree())
@@ -330,7 +330,7 @@ int main(){
 	cout << "h = ";
 	print(k.h);
 	
-	cout << "\nOrignal message:\n" << original_message << endl;
+	cout << "\nOriginal message:\n" << original_message << endl;
 	string decrypt_message;
 	for(int i = 0; i < original_message.size(); i += N){
 		string message = original_message.substr(i, min((int)N, (int)original_message.size() - i));
