@@ -5,7 +5,7 @@ typedef long long type;
 
 // Public constants
 // q > 3Np
-// p > 256, the ASCII table
+// p > 256, the ASCII extended table
 // N, q, p, prime
 const type N = 23, p = 257, q = 17737, INF = N * 100;
 
